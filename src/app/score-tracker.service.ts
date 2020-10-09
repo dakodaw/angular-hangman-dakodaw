@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { DrawService } from '../draw.service';
 import { Scores } from './scores';
 
 @Injectable()
 export class ScoreTrackerService {
   private winSubject = new BehaviorSubject<number>(0);
   private lossSubject = new BehaviorSubject<number>(0);
-  private remainingAttemptsSubject = new BehaviorSubject<number>(7);
+  private remainingAttemptsSubject = new BehaviorSubject<number>(9);
 
   public scoreInfo$: Observable<Scores> = combineLatest([this.winSubject, this.lossSubject, this.remainingAttemptsSubject])
   .pipe(
@@ -18,7 +19,9 @@ export class ScoreTrackerService {
     }))
   )
 
-  constructor() { }
+  constructor(
+    private readonly drawService: DrawService
+  ) { }
 
   public checkForWin(word: string, guess: string[]) {
     if(word === guess.join('')) {
@@ -31,6 +34,7 @@ export class ScoreTrackerService {
 
   public updateRemainingAttempts() {
     this.remainingAttemptsSubject.next(this.remainingAttemptsSubject.getValue() - 1);
+    this.drawService.drawNextPiece(this.remainingAttemptsSubject.getValue());
   }
 
   private lose() {

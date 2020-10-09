@@ -9,6 +9,7 @@ import { GameComponent } from './game/game.component';
 import { WordProviderService } from './word-provider.service';
 import { ScoreTrackerService } from './score-tracker.service';
 import { HangmanComponent } from './hangman/hangman.component';
+import { DrawService } from '../draw.service';
 
 @NgModule({
   imports: [ 
@@ -22,6 +23,6 @@ import { HangmanComponent } from './hangman/hangman.component';
   ],
   declarations: [ AppComponent, WelcomeComponent, GameComponent, HangmanComponent ],
   bootstrap:    [ AppComponent ],
-  providers: [WordProviderService, ScoreTrackerService]
+  providers: [DrawService ,WordProviderService, ScoreTrackerService]
 })
 export class AppModule { }

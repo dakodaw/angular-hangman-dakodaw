@@ -1,4 +1,6 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { tap } from 'rxjs/operators';
+import { DrawService } from '../../draw.service';
 
 @Component({
   selector: 'app-hangman',
@@ -10,12 +12,58 @@ export class HangmanComponent implements AfterViewInit {
   private canvasElement: CanvasRenderingContext2D;
 
   @ViewChild('canvas') public canvas: ElementRef;
-  constructor() { }
+  @Input() public complete: boolean = false;
 
-  ngAfterViewInit() {
+  constructor(
+    private readonly drawService: DrawService
+  ) {
+    
+   }
+  
+
+  public ngAfterViewInit() {
     const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
     this.canvasElement = canvasEl.getContext('2d');
-    this.drawGallows();
+    if(this.complete) {
+      this.drawAll;
+    }
+    this.drawService.attemptNumber$.pipe(
+      tap((attemptNumber) => {
+        switch(attemptNumber) {
+          case 1:
+            this.drawGallows();
+            return;
+          case 2:
+            this.drawHead();
+            return;
+          case 3:
+            this.drawBody();
+            return;
+          case 4:
+            this.drawRightArm();
+            return;
+          case 5:
+            this.drawLeftArm();
+            return;
+          case 6:
+            this.drawRightLeg();
+            return;
+          case 7:
+            this.drawLeftLeg();
+            return;
+          case 8:
+            this.drawRightFoot();
+            return;
+          case 9:
+            this.drawLeftFoot();
+            return;
+        }
+      })
+    ).subscribe();
+  }
+
+  private drawAll() {
+    this.drawGallows(); 
     this.drawHead();
     this.drawBody();
     this.drawRightArm();
