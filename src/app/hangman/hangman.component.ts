@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy,  ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { DrawService } from '../../draw.service';
 
@@ -7,18 +8,17 @@ import { DrawService } from '../../draw.service';
   templateUrl: './hangman.component.html',
   styleUrls: ['./hangman.component.css']
 })
-export class HangmanComponent implements AfterViewInit {
+export class HangmanComponent implements AfterViewInit, OnDestroy {
 
   private canvasElement: CanvasRenderingContext2D;
+  private subscription: Subscription;
 
   @ViewChild('canvas') public canvas: ElementRef;
   @Input() public complete: boolean = false;
 
   constructor(
     private readonly drawService: DrawService
-  ) {
-    
-   }
+  ) {}
   
 
   public ngAfterViewInit() {
@@ -27,7 +27,7 @@ export class HangmanComponent implements AfterViewInit {
     if(this.complete) {
       this.drawAll;
     }
-    this.drawService.attemptNumber$.pipe(
+    this.subscription = this.drawService.attemptNumber$.pipe(
       tap((attemptNumber) => {
         switch(attemptNumber) {
           case 1:
@@ -60,6 +60,10 @@ export class HangmanComponent implements AfterViewInit {
         }
       })
     ).subscribe();
+  }
+
+  public ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   private drawAll() {
