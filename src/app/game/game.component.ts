@@ -4,10 +4,12 @@ import { map } from 'rxjs/operators';
 import { WinsTrackerService } from '../wins-tracker.service';
 
 export interface GameComponentVM {
+  winStreak: number,
   letterGuessed: string,
   secretPhraseEncoded: string[],
   correctLetters: string[],
-  incorrectLetters: string[]
+  incorrectLetters: string[],
+  remainingAttempts: number
 }
 
 @Component({
@@ -26,16 +28,19 @@ export class GameComponent implements OnInit {
   private correctLetters: string[] = [];
 
   public vm$: Observable<GameComponentVM> = combineLatest([
+    this.winsTrackerService.wins$,
     this.letterGuessedSubject,
     this.secretPhraseEncodedSubject,
     this.correctLettersSubject,
     this.incorrectLettersSubject
   ]).pipe(
-      map(([letterGuessed, secretPhraseEncoded, correctLetters, incorrectLetters]) => ({
+      map(([winStreak, letterGuessed, secretPhraseEncoded, correctLetters, incorrectLetters]) => ({
+        winStreak,
         letterGuessed,
         secretPhraseEncoded,
         correctLetters,
-        incorrectLetters
+        incorrectLetters,
+        remainingAttempts: 2
       })),
   );
 

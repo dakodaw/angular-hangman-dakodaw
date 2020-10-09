@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 export class WinsTrackerService {
   private winSubject = new BehaviorSubject<number>(0);
   public wins$ = this.winSubject.asObservable();
+  
   constructor() { }
 
 

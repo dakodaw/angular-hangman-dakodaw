@@ -1,4 +1,7 @@
 <div *ngIf="vm$ | async as vm">
+  <section class="wins">
+    Wins: {{ vm.winStreak }}
+  </section>
   <section class="game">
     <div class="correct-letters">
       <h3>correct letters</h3>
@@ -14,7 +17,7 @@
   </section>
   <section>
     <p>
-      press any key to get started!
+      type a letter to guess
       <span class="blink">_</span>
       <input type="text" class="hidden" [value]="vm.letterGuessed" autofocus maxlength="1">
     </p>
