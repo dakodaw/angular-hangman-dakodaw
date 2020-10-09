@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { WinsTrackerService } from './wins-tracker.service';
+import { ScoreTrackerService } from './wins-tracker.service';
 
-  const phrases: string[] = [
+  const phrases = [
     "HELLO THERE",
     "GREEN MACHINE",
     "FROSTY THE SNOWMAN",
@@ -18,7 +18,6 @@ export class WordProviderService {
   private incorrectLetters: string[] = [];
   private incorrectLettersSubject = new BehaviorSubject<string[]>([]);
   public incorrectLetters$ = this.incorrectLettersSubject.asObservable();
-
   private currentPhraseSubject = new BehaviorSubject<string>(null);
   public currentPhrase$: Observable<string> = this.currentPhraseSubject.asObservable();
 
@@ -26,7 +25,7 @@ export class WordProviderService {
   public currentEncodedPhrase$ = this.currentPhraseEncodedSubject.asObservable();
   
   constructor(
-    private readonly winsTrackerService: WinsTrackerService
+    private readonly scoreTrackerService: ScoreTrackerService
   ) { 
     this.getNextPhrase();
   }
@@ -69,7 +68,7 @@ export class WordProviderService {
       this.incorrectLetters.push(letter)
       this.incorrectLettersSubject.next(this.incorrectLetters);
     }
-    this.winsTrackerService.checkForWin(this.currentPhraseSubject.getValue(), this.currentPhraseEncodedSubject.getValue());
+    this.scoreTrackerService.checkForWin(this.currentPhraseSubject.getValue(), this.currentPhraseEncodedSubject.getValue());
   }
 
    private replaceCorrectLetters(letter: string) {

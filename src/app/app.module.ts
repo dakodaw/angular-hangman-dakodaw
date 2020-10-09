@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { GameComponent } from './game/game.component';
 import { WordProviderService } from './word-provider.service';
-import { WinsTrackerService } from './wins-tracker.service';
+import { ScoreTrackerService } from './wins-tracker.service';
 
 @NgModule({
   imports: [ 
@@ -21,6 +21,6 @@ import { WinsTrackerService } from './wins-tracker.service';
   ],
   declarations: [ AppComponent, WelcomeComponent, GameComponent ],
   bootstrap:    [ AppComponent ],
-  providers: [WordProviderService, WinsTrackerService]
+  providers: [WordProviderService, ScoreTrackerService]
 })
 export class AppModule { }

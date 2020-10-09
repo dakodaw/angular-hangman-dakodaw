@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
 export class ScoreTrackerService {
   private winSubject = new BehaviorSubject<number>(0);
-  public wins$ = this.winSubject.asObservable();
+  public wins$: Observable<number> = this.winSubject.asObservable();
 
   private lossSubject = new BehaviorSubject<number>(0);
-  public losses$ = this.lossSubject.asObservable();
+  public losses$:Observable<number> = this.lossSubject.asObservable();
 
   constructor() { }
 
