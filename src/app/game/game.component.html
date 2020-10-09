@@ -1,0 +1,22 @@
+<div *ngIf="vm$ | async as vm">
+  <section class="game">
+    <div class="correct-letters">
+      <h3>correct letters</h3>
+      <span class="letter" *ngFor="let letter of vm.correctLetters">{{ letter }}</span>
+    </div>
+    <div class="incorrect-letters">
+      <h3>incorrect letters</h3>
+      <span class="letter" *ngFor="let letter of vm.incorrectLetters">{{ letter }}</span>
+    </div>
+  </section>
+  <section class="letters">
+    <span class="letter" *ngFor="let letter of vm.secretPhraseEncoded">{{ letter }}</span>
+  </section>
+  <section>
+    <p>
+      press any key to get started!
+      <span class="blink">_</span>
+      <input type="text" class="hidden" [value]="vm.letterGuessed" autofocus maxlength="1">
+    </p>
+  </section>
+</div>
