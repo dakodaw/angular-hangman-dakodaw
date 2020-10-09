@@ -1,0 +1,6 @@
+.hangman-container {
+  height: 250px;
+  border: solid green;
+  width: 30%;
+  margin: auto;
+}
