@@ -1,7 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { ScoreTrackerService } from '../wins-tracker.service';
+import { ScoreTrackerService } from '../score-tracker.service';
 import { WordProviderService } from '../word-provider.service';
 
 export interface Scores {

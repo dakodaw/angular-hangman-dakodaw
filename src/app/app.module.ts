@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { GameComponent } from './game/game.component';
 import { WordProviderService } from './word-provider.service';
-import { ScoreTrackerService } from './wins-tracker.service';
+import { ScoreTrackerService } from './score-tracker.service';
 
 @NgModule({
   imports: [ 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ScoreTrackerService } from './wins-tracker.service';
+import { ScoreTrackerService } from './score-tracker.service';
 
   const phrases = [
     "HELLO THERE",
