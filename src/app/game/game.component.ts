@@ -33,7 +33,14 @@ export class GameComponent implements OnInit {
     this.wordProviderService.incorrectLetters$,
     this.importantMessageSubject,
   ]).pipe(
-      map(([winCount, lossCount, letterGuessed, secretPhraseEncoded, correctLetters, incorrectLetters, importantMessage]) => ({
+      map(([
+        winCount: number,
+        lossCount: number, 
+        letterGuessed: string, 
+        secretPhraseEncoded: string[], 
+        correctLetters: string[], 
+        incorrectLetters: string[], 
+        importantMessage: string,]) => ({
           winCount,
           lossCount,
           letterGuessed,
