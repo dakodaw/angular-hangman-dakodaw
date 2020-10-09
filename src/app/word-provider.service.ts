@@ -5,7 +5,9 @@ import { WinsTrackerService } from './wins-tracker.service';
   const phrases: string[] = [
     "HELLO THERE",
     "GREEN MACHINE",
-    "FROSTY THE SNOWMAN"
+    "FROSTY THE SNOWMAN",
+    "SMOKEY THE BEAR",
+    "PERRY THE PLATYPUS"
   ];
 @Injectable()
 export class WordProviderService {

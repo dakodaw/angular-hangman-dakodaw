@@ -1,11 +1,12 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { WinsTrackerService } from '../wins-tracker.service';
+import { ScoreTrackerService } from '../wins-tracker.service';
 import { WordProviderService } from '../word-provider.service';
 
 export interface GameComponentVM {
-  winStreak: number,
+  winCount: number,
+  lossCount: number,
   letterGuessed: string,
   secretPhraseEncoded: string[],
   correctLetters: string[],
@@ -24,15 +25,17 @@ export class GameComponent implements OnInit {
   private importantMessageSubject = new BehaviorSubject<string>(null);
 
   public vm$: Observable<GameComponentVM> = combineLatest([
-    this.winsTrackerService.wins$,
+    this.scoreTrackerService.wins$,
+    this.scoreTrackerService.losses$,
     this.letterGuessedSubject,
     this.wordProviderService.currentEncodedPhrase$,
     this.wordProviderService.correctLetters$,
     this.wordProviderService.incorrectLetters$,
     this.importantMessageSubject,
   ]).pipe(
-      map(([winStreak, letterGuessed, secretPhraseEncoded, correctLetters, incorrectLetters, importantMessage]) => ({
-          winStreak,
+      map(([winCount, lossCount, letterGuessed, secretPhraseEncoded, correctLetters, incorrectLetters, importantMessage]) => ({
+          winCount,
+          lossCount,
           letterGuessed,
           secretPhraseEncoded,
           correctLetters,
@@ -44,7 +47,7 @@ export class GameComponent implements OnInit {
   );
 
   constructor(
-    private readonly winsTrackerService: WinsTrackerService,
+    private readonly scoreTrackerService: ScoreTrackerService,
     private readonly wordProviderService: WordProviderService
   ) {}
 
