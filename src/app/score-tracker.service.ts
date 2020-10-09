@@ -1,16 +1,24 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Scores } from './scores';
 
 @Injectable()
 export class ScoreTrackerService {
   private winSubject = new BehaviorSubject<number>(0);
-  public wins$: Observable<number> = this.winSubject.asObservable();
-
   private lossSubject = new BehaviorSubject<number>(0);
-  public losses$: Observable<number> = this.lossSubject.asObservable();
+  private remainingAttemptsSubject = new BehaviorSubject<number>(0);
+
+  public scoreInfo$: Observable<Scores> = combineLatest([this.winSubject, this.lossSubject, this.remainingAttemptsSubject])
+  .pipe(
+    map(([winCount, lossCount, remainingAttempts]) => ({
+      winCount,
+      lossCount,
+      remainingAttempts
+    }))
+  )
 
   constructor() { }
-
 
   public checkForWin(word: string, guess: string[]) {
     if(word === guess.join('')) {

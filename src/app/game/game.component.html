@@ -7,19 +7,22 @@
     <span>
       Losses: {{ vm.scores?.lossCount }}
     </span>
+    <span>
+      RemainingAttempts: {{ vm.scores?.remainingAttempts }}
+    </span>
   </section>
   <section class="game">
     <div class="correct-letters">
       <h3>correct letters</h3>
-      <span class="letter" *ngFor="let letter of vm.correctLetters">{{ letter }}</span>
+      <span class="letter" *ngFor="let letter of vm.currentPhraseInfo?.correctLetters">{{ letter }}</span>
     </div>
     <div class="incorrect-letters">
       <h3>incorrect letters</h3>
-      <span class="letter" *ngFor="let letter of vm.incorrectLetters">{{ letter }}</span>
+      <span class="letter" *ngFor="let letter of vm.currentPhraseInfo?.incorrectLetters">{{ letter }}</span>
     </div>
   </section>
   <section class="letters">
-    <span class="letter" *ngFor="let letter of vm.secretPhraseEncoded">{{ letter }}</span>
+    <span class="letter" *ngFor="let letter of vm.currentPhraseInfo?.currentEncodedPhrase">{{ letter }}</span>
   </section>
   <section *ngIf="vm.importantMessage" class="important-message">
     {{ vm.importantMessage }}

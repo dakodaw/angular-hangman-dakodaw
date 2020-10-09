@@ -1,21 +1,15 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { CurrentPhraseInfo } from '../current-phrase-info';
 import { ScoreTrackerService } from '../score-tracker.service';
+import { Scores } from '../scores';
 import { WordProviderService } from '../word-provider.service';
-
-export interface Scores {
-  winCount: number,
-  lossCount: number
-}
 
 export interface GameComponentVM {
   scores: Scores,
   letterGuessed: string,
-  secretPhraseEncoded: string[],
-  correctLetters: string[],
-  incorrectLetters: string[],
-  remainingAttempts: number,
+  currentPhraseInfo: CurrentPhraseInfo,
   importantMessage: string,
 }
 
@@ -26,31 +20,18 @@ export interface GameComponentVM {
 })
 export class GameComponent implements OnInit {
   private letterGuessedSubject = new BehaviorSubject<string>(null);
-  private importantMessageSubject = new BehaviorSubject<string>(null);
-  private scores$ = combineLatest([this.scoreTrackerService.wins$, this.scoreTrackerService.losses$])
-  .pipe(
-    map(([winCount, lossCount]) => ({
-      winCount,
-      lossCount
-    }))
-  );
-  
+  private importantMessageSubject = new BehaviorSubject<string>(null);  
 
   public vm$: Observable<GameComponentVM> = combineLatest([
-    this.scores$,
+    this.scoreTrackerService.scoreInfo$,
     this.letterGuessedSubject,
-    this.wordProviderService.currentEncodedPhrase$,
-    this.wordProviderService.correctLetters$,
-    this.wordProviderService.incorrectLetters$,
+    this.wordProviderService.currentPhraseInfo$,
     this.importantMessageSubject,
   ]).pipe(
-      map(([scores, letterGuessed, secretPhraseEncoded, correctLetters, incorrectLetters, importantMessage]) => ({
+      map(([scores, letterGuessed, currentPhraseInfo, importantMessage]) => ({
           scores,
           letterGuessed,
-          secretPhraseEncoded,
-          correctLetters,
-          incorrectLetters,
-          remainingAttempts: 2,
+          currentPhraseInfo,
           importantMessage
         })
       ),

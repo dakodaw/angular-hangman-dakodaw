@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ScoreTrackerService } from './score-tracker.service';
 
   const phrases = [
@@ -12,17 +13,25 @@ import { ScoreTrackerService } from './score-tracker.service';
 @Injectable()
 export class WordProviderService {
   private correctLetters: string[] = [];
-  private correctLettersSubject = new BehaviorSubject<string[]>([]);
-  public correctLetters$ = this.correctLettersSubject.asObservable();
-
   private incorrectLetters: string[] = [];
-  private incorrectLettersSubject = new BehaviorSubject<string[]>([]);
-  public incorrectLetters$ = this.incorrectLettersSubject.asObservable();
-  private currentPhraseSubject = new BehaviorSubject<string>(null);
-  public currentPhrase$: Observable<string> = this.currentPhraseSubject.asObservable();
 
+  private correctLettersSubject = new BehaviorSubject<string[]>([]);
+  private incorrectLettersSubject = new BehaviorSubject<string[]>([]);
+  private currentPhraseSubject = new BehaviorSubject<string>(null);
   private currentPhraseEncodedSubject = new BehaviorSubject<string[]>([]);
-  public currentEncodedPhrase$ = this.currentPhraseEncodedSubject.asObservable();
+
+  public currentPhraseInfo$ = combineLatest([
+    this.correctLettersSubject, 
+    this.incorrectLettersSubject, 
+    this.currentPhraseEncodedSubject
+  ])
+  .pipe(
+    map(([correctLetters, incorrectLetters, currentEncodedPhrase]) => ({
+      correctLetters,
+      incorrectLetters,
+      currentEncodedPhrase
+    }))
+  )
   
   constructor(
     private readonly scoreTrackerService: ScoreTrackerService
