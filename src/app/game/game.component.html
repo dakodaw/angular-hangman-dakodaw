@@ -2,10 +2,10 @@
 <div *ngIf="vm$ | async as vm">
   <section class="game">
     <span>
-      Wins: {{ vm.winCount }}
+      Wins: {{ vm.scores?.winCount }}
     </span>
     <span>
-      Losses: {{ vm.lossCount }}
+      Losses: {{ vm.scores?.lossCount }}
     </span>
   </section>
   <section class="game">

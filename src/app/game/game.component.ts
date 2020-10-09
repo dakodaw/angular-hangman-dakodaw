@@ -4,15 +4,19 @@ import { map, tap } from 'rxjs/operators';
 import { ScoreTrackerService } from '../wins-tracker.service';
 import { WordProviderService } from '../word-provider.service';
 
-export interface GameComponentVM {
+export interface Scores {
   winCount: number,
-  lossCount: number,
+  lossCount: number
+}
+
+export interface GameComponentVM {
+  scores: Scores,
   letterGuessed: string,
   secretPhraseEncoded: string[],
   correctLetters: string[],
   incorrectLetters: string[],
   remainingAttempts: number,
-  importantMessage: string
+  importantMessage: string,
 }
 
 @Component({
@@ -23,26 +27,25 @@ export interface GameComponentVM {
 export class GameComponent implements OnInit {
   private letterGuessedSubject = new BehaviorSubject<string>(null);
   private importantMessageSubject = new BehaviorSubject<string>(null);
+  private scores$ = combineLatest([this.scoreTrackerService.wins$, this.scoreTrackerService.losses$])
+  .pipe(
+    map(([winCount, lossCount]) => ({
+      winCount,
+      lossCount
+    }))
+  );
+  
 
   public vm$: Observable<GameComponentVM> = combineLatest([
-    this.scoreTrackerService.wins$,
-    this.scoreTrackerService.losses$,
+    this.scores$,
     this.letterGuessedSubject,
     this.wordProviderService.currentEncodedPhrase$,
     this.wordProviderService.correctLetters$,
     this.wordProviderService.incorrectLetters$,
     this.importantMessageSubject,
   ]).pipe(
-      map(([
-        winCount: number,
-        lossCount: number, 
-        letterGuessed: string, 
-        secretPhraseEncoded: string[], 
-        correctLetters: string[], 
-        incorrectLetters: string[], 
-        importantMessage: string,]) => ({
-          winCount,
-          lossCount,
+      map(([scores, letterGuessed, secretPhraseEncoded, correctLetters, incorrectLetters, importantMessage]) => ({
+          scores,
           letterGuessed,
           secretPhraseEncoded,
           correctLetters,

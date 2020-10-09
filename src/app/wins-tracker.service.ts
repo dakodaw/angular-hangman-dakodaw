@@ -7,7 +7,7 @@ export class ScoreTrackerService {
   public wins$: Observable<number> = this.winSubject.asObservable();
 
   private lossSubject = new BehaviorSubject<number>(0);
-  public losses$:Observable<number> = this.lossSubject.asObservable();
+  public losses$: Observable<number> = this.lossSubject.asObservable();
 
   constructor() { }
 
@@ -16,7 +16,13 @@ export class ScoreTrackerService {
     if(word === guess.join('')) {
       this.win();
     }
+
   }
+
+  private lose() {
+    this.lossSubject.next(this.lossSubject.getValue() +1);
+  }
+
   private win() {
     alert("You won!");
     this.winSubject.next(this.winSubject.getValue() + 1);
