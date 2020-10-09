@@ -1,0 +1,22 @@
+/* Add application styles & imports to this file! */
+body{
+  background-color: black;
+  color: rgb(12, 163, 12);
+}
+.hidden {
+  background-color: black;
+  color: rgb(12, 163, 12);
+  border: 0px transparent;
+  text-rendering: none;
+}
+input:focus {
+  outline: none;
+}
+
+
+input,
+textarea,
+[contenteditable] {
+  color: #666;
+  caret-color: transparent;
+}

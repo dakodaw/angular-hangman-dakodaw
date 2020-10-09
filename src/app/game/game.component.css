@@ -1,0 +1,42 @@
+h3 {
+  padding: 0;
+  margin: 0;
+}
+
+.game {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 15px;
+}
+.correct-letters {
+  height: 100px;
+  border: solid green;
+  width: 50%;
+  margin: 5px;
+}
+.incorrect-letters {
+  height: 100px;
+  border: solid green;
+  width: 50%;
+  margin: 5px;
+}
+.guessed-letters {
+  display: inline-block;
+}
+.letters {
+  height: 30px;
+}
+.letter {
+  padding: 5px;
+}
+
+.blink {
+  animation: blinker 0.6s linear infinite;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
