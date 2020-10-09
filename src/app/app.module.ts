@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { HelloComponent } from './hello.component';
 import { RouterModule } from '@angular/router';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { GameComponent } from './game/game.component';
@@ -20,7 +19,7 @@ import { WinsTrackerService } from './wins-tracker.service';
       { path: 'game', component: GameComponent },
     ])
   ],
-  declarations: [ AppComponent, HelloComponent, WelcomeComponent, GameComponent ],
+  declarations: [ AppComponent, WelcomeComponent, GameComponent ],
   bootstrap:    [ AppComponent ],
   providers: [WordProviderService, WinsTrackerService]
 })
