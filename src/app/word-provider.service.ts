@@ -71,17 +71,18 @@ export class WordProviderService {
     }
     if(isIncluded) {
       this.correctLetters.push(letter);
-      this.correctLettersSubject.next(this.correctLetters)
+      this.correctLettersSubject.next(this.correctLetters);
       this.replaceCorrectLetters(letter);
     } else {
-      this.incorrectLetters.push(letter)
+      this.incorrectLetters.push(letter);
       this.incorrectLettersSubject.next(this.incorrectLetters);
+      this.scoreTrackerService.updateRemainingAttempts();
     }
     this.scoreTrackerService.checkForWin(this.currentPhraseSubject.getValue(), this.currentPhraseEncodedSubject.getValue());
   }
 
-   private replaceCorrectLetters(letter: string) {
-     const secretPhrase = this.currentPhraseSubject.getValue();
+  private replaceCorrectLetters(letter: string) {
+    const secretPhrase = this.currentPhraseSubject.getValue();
     for(let i = 0; i< secretPhrase.length; ++i) {
       if(secretPhrase[i] !== ' ' && secretPhrase[i] === letter){
         const nextUpdate = this.currentPhraseEncodedSubject.getValue();
@@ -90,5 +91,4 @@ export class WordProviderService {
       } 
     }
   }
-
 }
