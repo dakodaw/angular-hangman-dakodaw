@@ -17,7 +17,7 @@ export class WelcomeComponent {
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     this.key = event.key
-    this.router.navigateByUrl('/game')
+    this.router.navigateByUrl('/game').then(error => console.log(error));
   }
 
 }

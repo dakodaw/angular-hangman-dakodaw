@@ -1,7 +1,8 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { WinsTrackerService } from '../wins-tracker.service';
+import { WordProviderService } from '../word-provider.service';
 
 export interface GameComponentVM {
   winStreak: number,
@@ -9,7 +10,8 @@ export interface GameComponentVM {
   secretPhraseEncoded: string[],
   correctLetters: string[],
   incorrectLetters: string[],
-  remainingAttempts: number
+  remainingAttempts: number,
+  importantMessage: string
 }
 
 @Component({
@@ -19,88 +21,52 @@ export interface GameComponentVM {
 })
 export class GameComponent implements OnInit {
   private letterGuessedSubject = new BehaviorSubject<string>(null);
-  private secretPhraseEncodedSubject = new BehaviorSubject<string[]>([]);
-  private correctLettersSubject = new BehaviorSubject<string[]>([]);
-  private incorrectLettersSubject = new BehaviorSubject<string[]>([]);
-
-  private secretPhrase = 'hello there';
-  private incorrectLetters: string[] = [];
-  private correctLetters: string[] = [];
+  private importantMessageSubject = new BehaviorSubject<string>(null);
 
   public vm$: Observable<GameComponentVM> = combineLatest([
     this.winsTrackerService.wins$,
     this.letterGuessedSubject,
-    this.secretPhraseEncodedSubject,
-    this.correctLettersSubject,
-    this.incorrectLettersSubject
+    this.wordProviderService.currentEncodedPhrase$,
+    this.wordProviderService.correctLetters$,
+    this.wordProviderService.incorrectLetters$,
+    this.importantMessageSubject,
   ]).pipe(
-      map(([winStreak, letterGuessed, secretPhraseEncoded, correctLetters, incorrectLetters]) => ({
-        winStreak,
-        letterGuessed,
-        secretPhraseEncoded,
-        correctLetters,
-        incorrectLetters,
-        remainingAttempts: 2
-      })),
+      map(([winStreak, letterGuessed, secretPhraseEncoded, correctLetters, incorrectLetters, importantMessage]) => ({
+          winStreak,
+          letterGuessed,
+          secretPhraseEncoded,
+          correctLetters,
+          incorrectLetters,
+          remainingAttempts: 2,
+          importantMessage
+        })
+      ),
   );
 
   constructor(
-    private readonly winsTrackerService: WinsTrackerService
-  ) { }
+    private readonly winsTrackerService: WinsTrackerService,
+    private readonly wordProviderService: WordProviderService
+  ) {}
 
   ngOnInit() {
-    this.secretPhraseEncodedSubject.next(this.encodeSecretPhrase(this.secretPhrase))
+    this.letterGuessedSubject.pipe(tap((letter) => {
+      if(letter) {
+        this.checkLetters(letter);
+      }
+    })).subscribe()
   }
 
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-    this.letterGuessedSubject.next(event.key)
-    this.checkLetters(this.letterGuessedSubject.getValue());
+    this.letterGuessedSubject.next(event.key);
   }
 
   private checkLetters(letter: string) {
     if(!/^[a-zA-Z]*$/g.test(letter)){
-      alert('please enter a letter');
+      this.importantMessageSubject.next('please enter a letter');
       return;
     }
-    letter = letter.toLowerCase();
-
-    const isIncluded = this.secretPhrase.includes(letter);
-    const alreadyGuessed = this.correctLetters.includes(letter) || this.incorrectLetters.includes(letter);
-    if(alreadyGuessed) {
-      return;
-    }
-    if(isIncluded) {
-      this.correctLetters.push(letter);
-      this.correctLettersSubject.next(this.correctLetters)
-      this.replaceCorrectLetters(letter);
-    } else {
-      this.incorrectLetters.push(letter)
-      this.incorrectLettersSubject.next(this.incorrectLetters);
-    }
-    this.winsTrackerService.checkForWin(this.secretPhrase, this.secretPhraseEncodedSubject.getValue());
+    this.importantMessageSubject.next(null);
+    this.wordProviderService.checkLetters(letter);
   }
-
-  private encodeSecretPhrase(word: string): string[] {
-    let underscores: string[] = [];
-    for(let i = 0; i< word.length; ++i) {
-      if(word[i] !== ' '){
-        underscores.push('_');
-      } else {
-        underscores.push(' ');
-      }
-    }
-    return underscores;
-  }
-  
-  private replaceCorrectLetters(letter: string) {
-    for(let i = 0; i< this.secretPhrase.length; ++i) {
-      if(this.secretPhrase[i] !== ' ' && this.secretPhrase[i] === letter){
-        const nextUpdate = this.secretPhraseEncodedSubject.getValue();
-        nextUpdate[i] = letter;
-        this.secretPhraseEncodedSubject.next(nextUpdate);
-      } 
-    }
-  }
-
 }
