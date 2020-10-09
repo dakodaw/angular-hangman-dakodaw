@@ -3,6 +3,10 @@ h3 {
   margin: 0;
 }
 
+.score-info > span {
+  padding: 15px;
+}
+
 .game {
   display: flex;
   flex-direction: row;
