@@ -25,7 +25,7 @@ export class HangmanComponent implements AfterViewInit, OnDestroy {
     const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
     this.canvasElement = canvasEl.getContext('2d');
     if(this.complete) {
-      this.drawAll;
+      this.drawAll();
     }
     this.subscription = this.drawService.attemptNumber$.pipe(
       tap((attemptNumber) => {

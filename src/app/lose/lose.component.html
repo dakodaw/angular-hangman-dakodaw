@@ -1,0 +1,10 @@
+<section>
+  <h3>unfortunately, you have lost</h3>
+  <app-hangman [complete]="true"></app-hangman>
+  <p *ngIf="currentWord$ | async as word">The phrase was  {{ word }}</p>
+  <p>
+    press any key to try again!
+    <span class="blink">_</span>
+    <input type="text" class="hidden" autofocus maxlength="1">
+  </p>
+</section>

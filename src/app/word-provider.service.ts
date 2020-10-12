@@ -20,6 +20,8 @@ export class WordProviderService {
   private currentPhraseSubject = new BehaviorSubject<string>(null);
   private currentPhraseEncodedSubject = new BehaviorSubject<string[]>([]);
 
+  public currentCompleteWord$ = this.currentPhraseSubject.asObservable();
+
   public currentPhraseInfo$ = combineLatest([
     this.correctLettersSubject, 
     this.incorrectLettersSubject, 

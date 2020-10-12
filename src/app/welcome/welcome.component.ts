@@ -8,16 +8,13 @@ import { Router } from '@angular/router';
 })
 export class WelcomeComponent {
   
-  public key: string;
-
   constructor(
     private readonly router: Router
   ) {}
 
   @HostListener('document:keypress', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
-    this.key = event.key
-    this.router.navigateByUrl('/game').then(error => console.log(error));
+  public async handleKeyboardEvent() {
+    await this.router.navigateByUrl('/game');
   }
 
 }

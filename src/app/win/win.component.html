@@ -1,0 +1,9 @@
+<section>
+  <h3>congratulations, you have won!</h3>
+  <p *ngIf="currentWord$ | async as word">You guessed {{ word }}</p>
+  <p>
+    press any key to try again!
+    <span class="blink">_</span>
+    <input type="text" class="hidden" autofocus maxlength="1">
+  </p>
+</section>

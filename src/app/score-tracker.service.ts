@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DrawService } from '../draw.service';
@@ -20,7 +21,8 @@ export class ScoreTrackerService {
   )
 
   constructor(
-    private readonly drawService: DrawService
+    private readonly drawService: DrawService,
+    private readonly router: Router
   ) { }
 
   public checkForWin(word: string, guess: string[]) {
@@ -38,12 +40,14 @@ export class ScoreTrackerService {
   }
 
   private lose() {
-    alert("You lost :(")
+    // alert("You lost :(")
     this.lossSubject.next(this.lossSubject.getValue() +1);
+    this.router.navigateByUrl("/lose");
   }
 
   private win() {
-    alert("You won!");
+    // alert("You won!");
     this.winSubject.next(this.winSubject.getValue() + 1);
+    this.router.navigateByUrl("/win");
   }
 }

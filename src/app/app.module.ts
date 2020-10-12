@@ -10,6 +10,8 @@ import { WordProviderService } from './word-provider.service';
 import { ScoreTrackerService } from './score-tracker.service';
 import { HangmanComponent } from './hangman/hangman.component';
 import { DrawService } from '../draw.service';
+import { WinComponent } from './win/win.component';
+import { LoseComponent } from './lose/lose.component';
 
 @NgModule({
   imports: [ 
@@ -19,9 +21,11 @@ import { DrawService } from '../draw.service';
       { path: 'welcome', component: WelcomeComponent },
       { path: '', redirectTo: 'welcome', pathMatch: 'full' },
       { path: 'game', component: GameComponent },
+      { path: 'win', component: WinComponent },
+      { path: 'lose', component: LoseComponent },
     ])
   ],
-  declarations: [ AppComponent, WelcomeComponent, GameComponent, HangmanComponent ],
+  declarations: [ AppComponent, WelcomeComponent, GameComponent, HangmanComponent, WinComponent, LoseComponent ],
   bootstrap:    [ AppComponent ],
   providers: [DrawService ,WordProviderService, ScoreTrackerService]
 })
