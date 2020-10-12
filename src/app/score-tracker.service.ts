@@ -7,9 +7,10 @@ import { Scores } from './scores';
 
 @Injectable()
 export class ScoreTrackerService {
+  private INITIAL_ATTEMPTS: number = 9;
   private winSubject = new BehaviorSubject<number>(0);
   private lossSubject = new BehaviorSubject<number>(0);
-  private remainingAttemptsSubject = new BehaviorSubject<number>(9);
+  private remainingAttemptsSubject = new BehaviorSubject<number>(this.INITIAL_ATTEMPTS);
 
   public scoreInfo$: Observable<Scores> = combineLatest([this.winSubject, this.lossSubject, this.remainingAttemptsSubject])
   .pipe(
@@ -40,13 +41,13 @@ export class ScoreTrackerService {
   }
 
   private lose() {
-    // alert("You lost :(")
+    this.remainingAttemptsSubject.next(this.INITIAL_ATTEMPTS);
     this.lossSubject.next(this.lossSubject.getValue() +1);
     this.router.navigateByUrl("/lose");
   }
 
   private win() {
-    // alert("You won!");
+    this.remainingAttemptsSubject.next(this.INITIAL_ATTEMPTS);
     this.winSubject.next(this.winSubject.getValue() + 1);
     this.router.navigateByUrl("/win");
   }

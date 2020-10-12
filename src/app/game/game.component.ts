@@ -43,6 +43,7 @@ export class GameComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.wordProviderService.setNextWord();
     this.letterGuessedSubject.pipe(tap((letter) => {
       if(letter) {
         this.checkLetters(letter);

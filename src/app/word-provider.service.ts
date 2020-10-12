@@ -43,6 +43,11 @@ export class WordProviderService {
 
   public setNextWord() {
     this.getNextPhrase();
+    this.correctLettersSubject.next([]);
+    this.incorrectLettersSubject.next([]);
+    this.correctLetters = [];
+    this.incorrectLetters = [];
+    this.encodeSecretPhrase(this.currentPhraseSubject.getValue());
   }
 
   private getNextPhrase() {
