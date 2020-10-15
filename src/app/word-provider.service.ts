@@ -4,11 +4,25 @@ import { map } from 'rxjs/operators';
 import { ScoreTrackerService } from './score-tracker.service';
 
   const phrases = [
-    "HELLO THERE",
-    "GREEN MACHINE",
-    "FROSTY THE SNOWMAN",
-    "SMOKEY THE BEAR",
-    "PERRY THE PLATYPUS"
+    "TELETYPE WRITER",
+    "TERMINAL",
+    "WORD PROCESSOR",
+    "DUMB TERMINAL",
+    "SMART TERMINAL",
+    "MAC TERMINAL",
+    "WINDOWS CONSOLE",
+    "BOOTSTRAPPING",
+    "APACHE",
+    "BYTE",
+    "BSOD",
+    "BIOS",
+    "EIGHT TRACK",
+    "VHS",
+    "CASSETTE TAPE",
+    "WALKMAN",
+    "TELEGRAPH",
+    "PHONOGRAPH",
+    "ALL IN ONE"
   ];
 @Injectable()
 export class WordProviderService {
